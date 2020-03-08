@@ -1,0 +1,39 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait as WDW
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get("https://en.m.wikipedia.org/wiki/Pizza")
+assert "Pizza" in driver.title
+listOfElements = driver.find_elements_by_xpath('//*[@id="mf-section-0"]//p//a')
+listOfReferences = driver.find_elements_by_xpath('//*[@class="reference"]//a')
+is_reference = []
+for i in listOfElements:
+    if i in listOfReferences:
+        is_reference.append(i)
+    else:
+        pass
+
+for i in range(len(listOfElements)):
+    elem = listOfElements[i]
+    time.sleep(0.5) # TODO: Convert sleep to explicit WAIT conditions
+    if elem in is_reference:
+        pass
+    else:
+        ActionChains(driver).move_to_element(elem).click(elem).perform()
+        time.sleep(1) # TODO: Convert sleep to explicit WAIT conditions
+        driver.back()
+        listOfElements = driver.find_elements_by_xpath('//*[@id="mf-section-0"]//p//a')
+        listOfReferences = driver.find_elements_by_xpath('//*[@class="reference"]//a')
+        is_reference = []
+        for i in listOfElements:
+            if i in listOfReferences:
+                is_reference.append(i)
+            else:
+                pass
+
+driver.close()
